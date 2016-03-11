@@ -1,10 +1,10 @@
 # Cortexsys 3.0 User Guide
 February, 2016
 
-![](media/cortexsys.png){width="3.736111111111111in"
+![Cortexsys Logo](media/cortexsys.png){width="3.7in"
 height="2.4508245844269467in"}
 
-  ![](media/snl.png){width="2.75in" height="0.42756233595800525in"}   ![](media/doe.png){width="1.8402777777777777in" height="0.4633180227471566in"}
+  ![SNL Logo](media/snl.png){width="2.75in" height="0.428in"}   ![DOE Logo](media/doe.png){width="1.84in" height="0.463in"}
   ---------------------------------------------------------------------- -----------------------------------------------------------------------------------
 Introduction
 ============
