@@ -1,8 +1,9 @@
 # Cortexsys 3.0 User Guide
-February, 2016
+### February, 2016
 
-      ![Cortexsys Logo](media/cortexsys.png)
-![SNL Logo](media/snl.png)        ![DOE Logo](media/doe.png)
+![Cortexsys Logo](media/cortexsys.png)
+![SNL Logo](media/snl.png)
+![DOE Logo](media/doe.png)
   ----------------------------------------------------------------------
 Introduction
 ============
