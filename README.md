@@ -1,86 +1,11 @@
-Cortexsys 3.0 User Guide
-
+# Cortexsys 3.0 User Guide
 February, 2016
 
-![](media/image1.wmf){width="3.736111111111111in"
+![](media/cortexsys.png){width="3.736111111111111in"
 height="2.4508245844269467in"}
 
-  ![](media/image2.wmf){width="2.75in" height="0.42756233595800525in"}   ![](media/image3.wmf){width="1.8402777777777777in" height="0.4633180227471566in"}
+  ![](media/snl.png){width="2.75in" height="0.42756233595800525in"}   ![](media/doe.png){width="1.8402777777777777in" height="0.4633180227471566in"}
   ---------------------------------------------------------------------- -----------------------------------------------------------------------------------
-
-Authorship and Acknowledgements
-===============================
-
-The Cortexsys 1.0, 2.0 and 3.0 code and user guide was written by
-Jonathan A. Cox (<jacox@sandia.gov>, <joncox@alum.mit.edu>) at Sandia
-National Laboratories under the support of the Laboratory Directed
-Research and Development (LDRD) program. The authors wish to acknowledge
-helpful discussions and feedback from Timothy J. Draelos.
-
-All algorithms in the code are implementations of those which have been
-openly published in the academic literature. Please refer to the
-references at the end of this document for further information.
-
-License
-=======
-
-Copyright (c) 2016 Sandia Corporation. Under the terms of Contract
-DE-AC04-94AL85000
-
-with Sandia Corporation, the U.S. Government retains certain rights in
-this software.
-
-Redistribution and use in source and binary forms, with or without
-modification,
-
-are permitted provided that the following conditions are met:
-
-Redistributions of source code must retain the above copyright notice,
-this list
-
-of conditions and the following disclaimer. Redistributions in binary
-form must
-
-reproduce the above copyright notice, this list of conditions and the
-following
-
-disclaimer in the documentation and/or other materials provided with the
-distribution.
-
-Neither the name of the Sandia Corporation nor the names of its
-contributors may
-
-be used to endorse or promote products derived from this software
-without specific
-
-prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-IS" AND ANY
-
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES
-
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT
-
-SHALL SANDIA CORPORATION BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL,
-
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-PROCUREMENT OF
-
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT,
-
-STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-ANY WAY
-
-OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
 Introduction
 ============
 
