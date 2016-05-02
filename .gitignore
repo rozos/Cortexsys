@@ -1,0 +1,9 @@
+Examples/ObjectVideoClassify/cortexsys_lic.mat
+nn_core/mmx/mmx.mexw64
+*.ptx
+nn_core/cuda/superconv4.cu~
+*.cu~
+nn_core/mmx/mmx_mkl_multi.mexw64
+*.mat
+*.fig
+*.m~
