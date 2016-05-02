@@ -1,5 +1,5 @@
-# Cortexsys 3.0 User Guide
-### February, 2016
+# Cortexsys 3.1 User Guide
+### May, 2016
 
 ![Cortexsys Logo](media/cortexsys.png)
 ![SNL Logo](media/snl.png)
@@ -47,7 +47,7 @@ Benefits of Cortexsys
 At present, Cortexsys implements both standard, feed forward deep neural
 nets (“deep learning”), including convolutional nets, and recurrent
 neural nets. Furthermore, all types can be combined in arbitrary
-ways[^1].
+ways.
 
 Summary of Features
 -------------------
@@ -686,9 +686,6 @@ References
 17. McCulloch, Warren S., and Walter Pitts. "A logical calculus of the
     ideas immanent in nervous activity." The bulletin of mathematical
     biophysics 5.4 (1943): 115-133.
-
-[^1]: Combining convolutional nets and recurrent nets will be added back
-    into version 3.1.
 
 [^2]: <http://www.mathworks.com/support/compilers/R2015b/index.html>
 
