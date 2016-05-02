@@ -41,24 +41,22 @@
            obj.N_l = precision(numel(layers.af), defs); % number of layers in the network
            
            if iscell(X.v)
-               if ndims(X.v{1}) == 2
-                  obj.m = precision(size(X.v{1}, 2), defs); % number of training examples
+               switch ndims(X.v{1})
+                   case {2,3}
+                       % 2D input is data X training example
+                        obj.m = precision(size(X.v{1}, 2), defs); % number of training examples
+                   case {4,5}
+                       % 4D 
+                        obj.m = precision(size(X.v{1}, 4), defs); % number of training examples
                end
-               % Need to add CNN and CNN with time here
            else
-               if ~isempty(X)
-                 if ndims(X.v) == 2
-                     % 2D input is data X training example
-                    obj.m = precision(size(X.v, 2), defs); % number of training examples
-                 elseif ndims(X.v) == 3
-                     % 3D input is data X training example X time
-                    obj.m = precision(size(X.v, 2), defs); % number of training examples
-                 elseif ndims(X.v) == 4
-                     % 4D 
-                     obj.m = precision(size(X.v, 4), defs); % number of training examples
-                 elseif ndims(X.v) == 5
-                     obj.m = precision(size(X.v, 4), defs); % number of training examples
-                 end
+               switch ndims(X.v)
+                   case {2,3}
+                       % 2D input is data X training example
+                        obj.m = precision(size(X.v, 2), defs); % number of training examples
+                   case {4,5}
+                       % 4D 
+                        obj.m = precision(size(X.v, 4), defs); % number of training examples
                end
            end
            
@@ -75,10 +73,28 @@
         end
         
         function disableCuda(obj)
+            %obj.cuda = {};
+            %obj.W = cellfun(@(x) gather(x), obj.W, 'UniformOutput',false);
+            %obj.b = cellfun(@(x) gather(x), obj.b, 'UniformOutput',false);
+            %obj.A = cellfun(@(x) gather(x), obj.A, 'UniformOutput',false);
+            
+            obj.W = gatherWrapper(obj.W, obj.defs);
+            obj.b = gatherWrapper(obj.b, obj.defs);
+            obj.A = gatherWrapper(obj.A, obj.defs);
+            
             obj.defs.useGPU = false;
-            obj.cuda = {};
-            obj.W = cellfun(@(x) gather(x), obj.W, 'UniformOutput',false);
-            obj.b = cellfun(@(x) gather(x), obj.b, 'UniformOutput',false);
+        end
+        
+        function enableCuda(obj)
+            obj.defs.useGPU = true;
+            %obj.cuda = {};
+            %obj.W = cellfun(@(x) gpuArrayWrapper(x, obj.defs), obj.W, 'UniformOutput',false);
+            %obj.b = cellfun(@(x) gpuArrayWrapper(x, obj.defs), obj.b, 'UniformOutput',false);
+            %obj.A = cellfun(@(x) gpuArrayWrapper(x, obj.defs), obj.A, 'UniformOutput',false);
+            
+            obj.W = gpuArrayWrapper(obj.W, obj.defs);
+            obj.b = gpuArrayWrapper(obj.b, obj.defs);
+            obj.A = gpuArrayWrapper(obj.A, obj.defs);
         end
         
         function gpu(obj, varargin)

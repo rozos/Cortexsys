@@ -1,7 +1,7 @@
 #include "tmwtypes.h"
 
 // Set isevenX = 1 if kernel is even in X, iseven = 0 if odd.
-__global__ void superconv5(double *dout, const double *d, const double *W,
+__global__ void superconv5(float *dout, const float *d, const float *W,
                            const int32_T Nax, const int32_T Nay, const int32_T Ni, 
                            const int32_T Ndx, const int32_T Ndy, const int32_T Ndxh, 
                            const int32_T Ndyh, const int32_T isevenX, const int32_T isevenY) 
@@ -25,8 +25,8 @@ __global__ void superconv5(double *dout, const double *d, const double *W,
     int32_T my = y - Ndyh + isevenY;
     
 	// For a "full" convolution, add if statements to set m,n range to simulate zero padded input
-    double res = 0;
-	double dpad = 0;
+    float res = 0;
+	float dpad = 0;
     int32_T m, n; // x, y of W(1,2)
     #pragma unroll 10
     for (m=-Ndxh; m<=Ndxh-isevenX; m++) {

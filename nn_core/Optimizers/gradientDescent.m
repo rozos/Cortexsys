@@ -124,9 +124,11 @@ while (i < p.maxIter)
             Ytmp = nn.Y;
             nn.A{1} = Xts;
             nn.Y = Yts;
-            [pred, ~]= predictDeep(feedForward(nn, numel(r), false, true));
+            nn.disableCuda();
+            [pred, ~]= predictDeep(feedForward(nn, numel(yts), false, true));
             testError(end+1) = 100 - mean(double(pred == yts)) * 100;
             %Swap out test set
+            nn.enableCuda();
             nn.Y = Ytmp;
             
             disp(sprintf('  Test Set Error: %g%%, Training Set Error: %g%%', testError(end), trainError(end)));

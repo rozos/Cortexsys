@@ -14,14 +14,13 @@ addpath('../nn_core/cuda');
 addpath('../nn_core/mmx');
 addpath('../nn_core/Optimizers');
 addpath('../nn_core/Activations');
-addpath('../nn_core/Activations');
 addpath('../nn_core/Wrappers');
 addpath('../nn_core/ConvNet');
 tic
 
-PRECISION = 'double';
+PRECISION = 'single';
      % definitions(PRECISION, useGPU, whichThreads, plotOn) 
-defs = definitions(PRECISION, false, [1], false); 
+defs = definitions(PRECISION, true, [1], false); 
 
 seed = posixtime(datetime); % Set random number generation seed
 
@@ -32,11 +31,12 @@ Nbench = 3; % Run a quick benchmark with N iterations
 
 checkLSTM = false;
 checkAutoencoder = false;
-checkCNN = true;
+checkCNN = false;
+checkCNN_LSTM = true;
 checkFullyConnected = false;
 
 params = struct();
-params.lambda = precision(0.5,defs);
+params.lambda = precision(1,defs);
 params.denoise = precision(0.25,defs);
 params.dropout = precision(0.5,defs);
 params.miniBatchSize = precision(0,defs); % set to zero to disable mini-batches
@@ -46,7 +46,30 @@ params.rho_s0 = 0.2; % Target average hidden unit activation for sparsity penalt
 
 %% checkLSTM defining the neural network %%
 layers = struct();
-if checkLSTM
+if checkCNN_LSTM
+    params.T = 3;
+    params.Tos = 1;
+    
+    layers.af{1} = [];
+    layers.sz{1} = [1 12 12];
+    layers.typ{1} = defs.TYPES.INPUT;
+
+    layers.af{end+1} = tanh_af(defs, []);
+    layers.sz{end+1} = precision([2 5 5], defs);
+    layers.typ{end+1} = defs.TYPES.CONVOLUTIONAL;
+   
+    layers.af{end+1} = [];
+    layers.sz{end+1} = precision([2 2 2], defs);
+    layers.typ{end+1} = defs.TYPES.AVERAGE_POOLING;
+  
+    layers.af{end+1} = tanh_af(defs, []);
+    layers.sz{end+1} = [5 1 1];
+    layers.typ{end+1} = defs.TYPES.RECURRENT;
+    
+    layers.af{end+1} = softmax(defs, defs.COSTS.CROSS_ENTROPY);
+    layers.sz{end+1} = [4 1 1];
+    layers.typ{end+1} = defs.TYPES.FULLY_CONNECTED;
+elseif checkLSTM
     params.T = 7;
     params.Tos = 2;
     
@@ -132,7 +155,7 @@ elseif checkAutoencoder
     layers.typ{end+1} = defs.TYPES.FULLY_CONNECTED;
 end
 
-m = 10; % number of training examples (x_i)
+m = 5; % number of training examples (x_i)
 r = 1:m;
 N_l = numel(layers.af);
 
@@ -151,14 +174,20 @@ elseif checkCNN
     y  = 1 + mod(1:m, layers.sz{end}(1))';
     Y = eye(layers.sz{end}(1));
     Y = varObj(Y(y,:)', defs, defs.TYPES.OUTPUT);
-elseif checkLSTM && checkCNN
-    X  = varObj(.1*randnWrapper([layers.sz{1}(2), layers.sz{1}(3), layers.sz{1}(1), m, params.T], defs), defs, defs.TYPES.INPUT);
-elseif checkLSTM
+elseif checkLSTM || checkCNN_LSTM
     X = cell(params.T+2,1);
-    X{1} = zerosWrapper([layers.sz{1}(1), m], defs);
-    X{end} = zerosWrapper([layers.sz{1}(1), m], defs);
-    for t=2:params.T+1
-       X{t} = randWrapper([layers.sz{1}(1), m], defs);
+    if checkCNN_LSTM
+        X{1} = zerosWrapper([layers.sz{1}(2), layers.sz{1}(3), layers.sz{1}(1), m], defs);
+        X{end} = X{1};
+        for t=2:params.T+1
+           X{t} = randWrapper([layers.sz{1}(2), layers.sz{1}(3), layers.sz{1}(1), m], defs);
+        end
+    else
+        X{1} = zerosWrapper([layers.sz{1}(1), m], defs);
+        X{end} = X{1};
+        for t=2:params.T+1
+           X{t} = randWrapper([layers.sz{1}(1), m], defs);
+        end
     end
     X = varObj(X, defs, defs.TYPES.INPUT);
     
@@ -192,8 +221,8 @@ elseif checkFullyConnected
     costFunc = @(nn,r,newRandGen) nnCostFunctionCNN(nn,r,newRandGen);
 elseif checkCNN
     costFunc = @(nn,r,newRandGen) nnCostFunctionCNN(nn,r,newRandGen);
-elseif checkLSTM
-    costFunc = @(nn,r,newRandGen) nnCostFunctionLSTM(nn,r,newRandGen); 
+elseif checkLSTM || checkCNN_LSTM
+    costFunc = @(nn,r,newRandGen) nnCostFunctionLSTM_CNN(nn,r,newRandGen); 
 end
 
 % Run a quick benchmark
@@ -249,9 +278,7 @@ for k=1:N_l-1
 end
 
 diff = norm(numgrad-grad)/norm(numgrad+grad)/m;
-fprintf(['\nIf your backpropagation implementation is correct, then \n' ...
-         'the relative difference will be small (less than 1e-9):\n' ...
-         'Relative Difference: %g\n\n'], diff);
+fprintf(['Relative Difference: %g\n\n'], diff);
 
 fprintf('--Relative differences:--\n');
 for k=1:N_l-1
@@ -267,6 +294,12 @@ for k=1:N_l-1
 end
 fprintf('\n');
 
-if diff/params.T > 1e-9
+switch PRECISION
+    case 'single'
+        errThresh = 5e-2;
+    case 'double'
+        errThresh = 1e-9;
+end
+if diff/params.T > errThresh
     error('Gradient check error!');
 end

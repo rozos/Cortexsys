@@ -23,6 +23,10 @@ function preallocateMemory(nn, m, T)
                 
                 % LSTM output activation
                 nn.A{k}.v = zerosWrapper([nn.l.szo{k}(1), m, T+2], nn.defs);
+            case {nn.defs.TYPES.CONVOLUTIONAL, nn.defs.TYPES.AVERAGE_POOLING}
+                ztmp = zerosWrapper([nn.l.szo{k}(2), nn.l.szo{k}(3), nn.l.szo{k}(1), m, T+2], nn.defs);
+                nn.d{k} = ztmp;
+                nn.A{k}.v = ztmp;
         end
     end
 end

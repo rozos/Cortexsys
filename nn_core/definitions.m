@@ -6,7 +6,7 @@ classdef definitions < handle
     properties(GetAccess = 'public', SetAccess = 'private')
        COSTS;
        TYPES;
-       VERSION = 3.0;
+       VERSION = 3.1;
        GPUs = {};
        Threads;
        numThreads;
@@ -85,7 +85,7 @@ classdef definitions < handle
             
             % Display version, license and copyright information
             disp(['*** Cortexsys version ' num2str(obj.VERSION) ' initialized ***']);
-            disp(['    (c) Sandia National Laboratories 2015']);
+            disp(['    Released under BSD License']);
             disp(['    Author: Jonathan A. Cox (jacox@sandia.gov, joncox@alum.mit.edu)']);
             disp(['    ->Using ' obj.PRECISION ' precision.']);
             

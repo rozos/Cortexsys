@@ -8,6 +8,13 @@ function [Ao, p] = superconv5(d, W, p)
 
 % Setup kernel and parameters and return them to caller for speed (reuse)
 if isempty(p)
+    tmp = W(1,1,1,1);
+    if (isa(gather(tmp), 'single'))
+        PRECISION = 'single';
+    else
+        PRECISION = 'double';
+    end
+    
     p.Nw =      int32(size(W)); % dimension of kernel
     p.Nw_even =  int32(not(mod([p.Nw(1) p.Nw(2)], 2)));
     p.Nw_odd =   int32(mod([p.Nw(1) p.Nw(2)], 2));
@@ -20,7 +27,7 @@ if isempty(p)
     
     % pre-allocate output memory
     % Perform a FULL convolution (simulated zero padding)
-    p.result = gpuArray.zeros(p.Nd(1)+p.Nw(1)-1, p.Nd(2)+p.Nw(2)-1, p.Nin, p.Ni, p.Nout);
+    p.result = gpuArray.zeros(p.Nd(1)+p.Nw(1)-1, p.Nd(2)+p.Nw(2)-1, p.Nin, p.Ni, p.Nout, PRECISION);
     
     % load and setup cuda kernel
     p.cudakernel = parallel.gpu.CUDAKernel('superconv5.ptx','superconv5.cu','superconv5');

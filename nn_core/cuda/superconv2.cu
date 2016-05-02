@@ -2,7 +2,7 @@
 
 // Note: on GTX Titan Black, optimal number of threads/images is 64 (Ni = 64).
 // Set isevenX = 1 if kernel is even in X, iseven = 0 if odd.
-__global__ void superconv2(double *Mout, const double *M, const double *K, 
+__global__ void superconv2(float *Mout, const float *M, const float *K, 
                            const int32_T Nmx,  const int32_T Nmy,
                            const int32_T Nkx,  const int32_T Nky, 
                            const int32_T Nkxh, const int32_T Nkyh, 
@@ -20,7 +20,7 @@ __global__ void superconv2(double *Mout, const double *M, const double *K,
     int32_T mx = x + Nkxh;
     int32_T my = y + Nkyh;
     
-    double res = 0;
+    float res = 0;
     int32_T i, j;
     #pragma unroll 10
     for (i=-Nkxh; i<=Nkxh-isevenX; i++) {

@@ -8,6 +8,13 @@ function [Ao, p] = superconv2(maps, K, p)
 
 % Setup kernel and parameters and return them to caller for speed (reuse)
 if isempty(p)
+    tmp = K(1,1,1,1);
+    if (isa(gather(tmp), 'single'))
+        PRECISION = 'single';
+    else
+        PRECISION = 'double';
+    end
+    
     p.Nk =      int32(size(K)); % dimension of kernel
     p.Nkeven =  int32(not(mod([p.Nk(1) p.Nk(2)], 2)));
     p.Nkodd =   int32(mod([p.Nk(1) p.Nk(2)], 2));
@@ -15,7 +22,7 @@ if isempty(p)
     p.Nm =      int32([size(maps,1) size(maps,2)]); % dimension of image
     
     % pre-allocate output memory
-    p.result = gpuArray.zeros(p.Nm(1)-p.Nk(1)+1, p.Nm(2)-p.Nk(2)+1, p.Nk(3));
+    p.result = gpuArray.zeros(p.Nm(1)-p.Nk(1)+1, p.Nm(2)-p.Nk(2)+1, p.Nk(3), PRECISION);
     
     % load and setup cuda kernel
     p.cudakernel = parallel.gpu.CUDAKernel('superconv2.ptx','superconv2.cu','superconv2');

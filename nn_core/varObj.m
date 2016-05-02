@@ -39,9 +39,15 @@ classdef varObj < handle
         function v = getmb(obj, r)
             if ((obj.type == obj.defs.TYPES.INPUT) || (obj.type == obj.defs.TYPES.OUTPUT));
                 if iscell(obj.v)
-                   % time series data where each time point is contained in a unique cell
-                   v = cellfun(@(C) full(C(:,r)), obj.v, 'UniformOutput', false);
-                   v = gpuArrayWrapper(precision(cat(3,v{:}),obj.defs), obj.defs);
+                    switch ndims(obj.v{1})
+                        case 2
+                           % time series data where each time point is contained in a unique cell
+                           v = cellfun(@(C) full(C(:,r)), obj.v, 'UniformOutput', false);
+                           v = gpuArrayWrapper(precision(cat(3,v{:}),obj.defs), obj.defs);
+                        case 4
+                           v = cellfun(@(C) full(C(:,:,:,r)), obj.v, 'UniformOutput', false);
+                           v = gpuArrayWrapper(precision(cat(5,v{:}),obj.defs), obj.defs); 
+                    end
                 else
                    if (ndims(obj.v) == 2) % standard fully connected net data
                         v = gpuArrayWrapper(precision(full(obj.v(:,r)), obj.defs), obj.defs); 

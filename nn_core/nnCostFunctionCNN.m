@@ -54,8 +54,7 @@ for k=nn.N_l:-1:2
             else
                 % Compute hidden layer deltas
                 d{k} = nn.W{k}'*d{k+1}.*nn.l.af{k}.grad(nn.A{k}.v);
-            end
-            
+            end           
         case nn.defs.TYPES.CONVOLUTIONAL
             switch nn.l.typ{k+1} % switch based on type of layer above
                 case nn.defs.TYPES.FULLY_CONNECTED
@@ -67,8 +66,7 @@ for k=nn.N_l:-1:2
                 case nn.defs.TYPES.AVERAGE_POOLING
                     d{k+1} = cnnUnflattenLayer(d{k+1}, nn.l.szo{k+1});
                     d{k} = ultrakron(d{k+1}, nn.W{k}(:,:,1)).*nn.l.af{k}.grad(nn.A{k}.v); % "blow up" the deltas into an unpooled version
-          	end
-            
+            end       
         case nn.defs.TYPES.AVERAGE_POOLING
             switch nn.l.typ{k+1} % switch based on type of layer above
                 case nn.defs.TYPES.FULLY_CONNECTED

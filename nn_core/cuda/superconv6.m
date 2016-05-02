@@ -1,4 +1,4 @@
-function [Ao, p] = superconv4(A, d, p)
+function [Ao, p] = superconv6(A, d, p)
 % SUPERCONV3 Perform convolution of a set of 3D "images" (4D array) with a
 % set of 2D kernels (3D array), giving a 4D output. 
 % For convolutional neural networks, the third dimension can be summed
@@ -21,16 +21,17 @@ if isempty(p)
     p.Ndh =     ([p.Nd(1) p.Nd(2)] - p.Nd_odd)/2;
     p.Na =      int32(size(A));
     
+    p.Nt = p.Na(5);
     p.Ni = p.Na(4);
     p.Nin = p.Na(3);
     p.Nout = p.Nd(3);
     
     % pre-allocate output memory
-    p.result = gpuArray.zeros(p.Na(1)-p.Nd(1)+1, p.Na(2)-p.Nd(2)+1, p.Nin, p.Nout, p.Ni, PRECISION);
+    p.result = gpuArray.zeros(p.Na(1)-p.Nd(1)+1, p.Na(2)-p.Nd(2)+1, p.Nin, p.Nout, p.Ni, p.Nt, PRECISION);
     
     % load and setup cuda kernel
-    p.cudakernel = parallel.gpu.CUDAKernel('superconv4.ptx','superconv4.cu','superconv4');
-    p.cudakernel.GridSize = [p.Na(1)-p.Nd(1)+1, p.Na(2)-p.Nd(2)+1, p.Ni];
+    p.cudakernel = parallel.gpu.CUDAKernel('superconv6.ptx','superconv6.cu','superconv6');
+    p.cudakernel.GridSize = [p.Na(1)-p.Nd(1)+1, p.Na(2)-p.Nd(2)+1, p.Ni*p.Nt];
     p.cudakernel.ThreadBlockSize = [p.Nin, p.Nout, 1];
     
     p.Nd = gpuArray(p.Nd);
@@ -39,9 +40,10 @@ if isempty(p)
     p.Ndh = gpuArray(p.Ndh);
     p.Na = gpuArray(p.Na);
     p.Ni = gpuArray(p.Ni);
+    p.Nt = gpuArray(p.Nt);
 end
 
-Ao = feval(p.cudakernel, p.result, A, d, p.Na(1), p.Na(2), p.Ni, p.Nd(1),...
+Ao = feval(p.cudakernel, p.result, A, d, p.Na(1), p.Na(2), p.Ni, p.Nt, p.Nd(1),...
            p.Nd(2), p.Ndh(1), p.Ndh(2), p.Nd_even(1), p.Nd_even(2));
 
 end
