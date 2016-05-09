@@ -186,27 +186,24 @@ accomplish this. You must adjust the root part of the path ‘../../’ to
 reflect the location of the Cortexsys directory (e.g.
 ‘\~/user/Cortexsys/’).
 
+```matlab
 addpath('../../nn\_gui');
-
 addpath('../../nn\_core');
-
 addpath('../../nn\_core/cuda');
-
 addpath('../../nn\_core/mmx');
-
 addpath('../../nn\_core/Optimizers');
-
 addpath('../../nn\_core/Activations');
-
 addpath('../../nn\_core/Wrappers');
-
 addpath('../../nn\_core/ConvNet');
+```
 
 Next, you must initialize Cortexsys and setup some basic parameters that
 are stored in the definitions object. This object must be passed to many
 of the Cortexsys objects and routines. Call the definitions constructor:
 
+```matlab
 defs = definitions(PRECISION, useGPU, whichGPU, plotOn);
+```
 
 Here, PRECISION is a string that may be either ‘double’ or ‘single’.
 Also, useGPU and plotOn are booleans (set to true or false) that control
@@ -253,29 +250,20 @@ can be other than 1. For instance, \[768 1 1\] creates a layer with 768
 LReLU units. A convolutional layer of size \[12 5 5\] would have 12
 feature maps with kernel sizes of 5x5 pixels each.
 
-layers.af{1} = \[\];
-
-layers.sz{1} = \[input\_size 1 1\];
-
+```matlab
+layers.af{1} = [];
+layers.sz{1} = [input_size 1 1];
 layers.typ{1} = defs.TYPES.INPUT;
-
 layers.af{end+1} = LReLU(defs, defs.COSTS.SQUARED\_ERROR);
-
-layers.sz{end+1} = \[768 1 1\];
-
-layers.typ{end+1} = defs.TYPES.FULLY\_CONNECTED;
-
-layers.af{end+1} = LReLU(defs, defs.COSTS.SQUARED\_ERROR);
-
-layers.sz{end+1} = \[256 1 1\];
-
-layers.typ{end+1} = defs.TYPES.FULLY\_CONNECTED;
-
-layers.af{end+1} = softmax(defs, defs.COSTS.CROSS\_ENTROPY);
-
-layers.sz{end+1} = \[output\_size 1 1\];
-
-layers.typ{end+1} = defs.TYPES.FULLY\_CONNECTED;
+layers.sz{end+1} = [768 1 1];
+layers.typ{end+1} = defs.TYPES.FULLY_CONNECTED;
+layers.af{end+1} = LReLU(defs, defs.COSTS.SQUARED_ERROR);
+layers.sz{end+1} = [256 1 1];
+layers.typ{end+1} = defs.TYPES.FULLY_CONNECTED;
+layers.af{end+1} = softmax(defs, defs.COSTS.CROSS_ENTROPY);
+layers.sz{end+1} = [output_size 1 1];
+layers.typ{end+1} = defs.TYPES.FULLY_CONNECTED;
+```
 
 In contrast to some approaches, the input data is represented as layer
 1, and is effectively just another layer in the network.
@@ -290,7 +278,9 @@ The connectivity, type and size of the layers can be visualized with the
 nnShow method located in the nn\_gui folder. Simply pass nnShow with a
 figure number, the layers structure and the definitions object.
 
+```matlab
 nnShow(123, layers, defs);
+```
 
 For the recurrent net example, the following plot is generated:
 
@@ -312,53 +302,34 @@ is created (to the constructor). In general, the values of these
 hyper-parameters are not known in advance, and it is best to play with
 different values to get a feeling for what works best.
 
+```matlab
 % Training parameters
-
 params.maxIter = 1000; % How many iterations to train for
-
 params.miniBatchSize = 128; **% set size of mini-batches**
 
 % Regularization parameters
-
-params.maxnorm = 0; **% enable max norm regularization if \~= 0**
-
-params.lambda = 1; **% enable L2 regularization if \~= 0**
-
-params.alphaTau = 0.25\*params.maxIter; **% Learning rate decay**
-
-params.denoise = 0.25; **% enable input denoising if \~= 0**
-
-params.dropout = 0.6; **% enable dropout regularization if \~= 0**
-
-params.tieWeights = false; **% enable tied weights for autoencoder?**
-
-params.beta\_s = 0; **% Strength of sparsity penalty; set to 0 to
-disable**
-
-params.rho\_s0 = 0; **% Target hidden unit activation for sparsity
-penalty**
+params.maxnorm = 0;0 % enable max norm regularization if ~= 0
+params.lambda = 1; % enable L2 regularization if ~= 0
+params.alphaTau = 0.25*params.maxIter; % Learning rate decay
+params.denoise = 0.25; % enable input denoising if ~= 0
+params.dropout = 0.6; % enable dropout regularization if ~= 0
+params.tieWeights = false; % enable tied weights for autoencoder?
+params.beta_s = 0; % Strength of sparsity penalty; set to 0 to disable
+params.rho_s0 = 0; % Target hidden unit activation for sparsity penalty
 
 % Learning rate parameters
-
-params.momentum = 0.9; **% Momentum for stochastic gradient descent**
-
-params.alpha = 0.01; **% Learning rate for SGD**
-
-params.rho = 0.95; **% AdaDelta hyperparameter**
-
-params.eps = 1e-6; **% AdaDelta hyperparameter**
+params.momentum = 0.9; % Momentum for stochastic gradient descent
+params.alpha = 0.01; % Learning rate for SGD
+params.rho = 0.95; % AdaDelta hyperparameter
+params.eps = 1e-6; % AdaDelta hyperparameter
 
 % Conjugate gradient parameters
-
-params.cg.N = 10; **% Max CG iterations before reset**
-
-params.cg.sigma0 = 0.01; **% CG Secant line search parameter**
-
-params.cg.jmax = 10; **% Maximum CG Secant iterations**
-
-params.cg.eps = 1e-4; **% Update threshold for CG**
-
-params.cg.mbIters = 10; **% How many CG iterations per minibatch?**
+params.cg.N = 10; % Max CG iterations before reset
+params.cg.sigma0 = 0.01; % CG Secant line search parameter
+params.cg.jmax = 10; % Maximum CG Secant iterations
+params.cg.eps = 1e-4; % Update threshold for CG
+params.cg.mbIters = 10; % How many CG iterations per minibatch?
+```
 
 If the data is time series data, where each time step is stored in a
 different cell in a cell array, getmb() extracts the mini-batch and
@@ -385,14 +356,17 @@ accept the input and output data objects and initial weights and biases.
 For example, the object can be created and the weights and biases
 initialized with the following code:
 
+```matlab
 nn = nnLayers(params, layers, X, Y, {}, {}, defs);
-
 nn.initWeightsBiases();
+```
 
 Or, to use your own initial weights and biases, you can pass nnLayers W
 and b at creation:
 
+```matlab
 nn = nnLayers(params, layers, X, Y, W, b, defs);
+```
 
 Keep in mind, the input and target data, X and Y, could be the same
 varObj to save memory—as in the case of an auto-encoder.
@@ -411,7 +385,9 @@ function uses the backpropagation algorithm to compute the gradients of
 the weights and biases with respect to the cost function defined in the
 layers structure.
 
+```matlab
 costFunc = @(nn,r,newRandGen) nnCostFunctionCNN(nn,r,newRandGen);
+```
 
 The function handle takes three arguments: the nnLayers object, the
 mini-batch to use (indicies of data to extract from the data set), and
@@ -422,8 +398,10 @@ nature of the network during training, such as conjugate gradient.
 
 Next, pass the training function to the optimization routine:
 
+```matlab
 gradientDescentAdaDelta(costFunc, nn, defs, Xts, Yts, yts, y, 'Training
 Entire Network');
+```
 
 The routine expects the cost function handle, the nnLayers object and
 the definitions object. Optionally, you can also provide
@@ -443,17 +421,15 @@ To compute the output of a network on a set of input data, load the
 appropriate data into the first layer in the nnLayers object and pass it
 to the feedforward function.
 
+```matlab
 nn.A{1} = Xts;
-
 nn.Y = Yts;
-
 m = size(Yts.v, 2);
-
 Aout = feedForward(nn, m);
 
-\[pred, probs\]= predictDeep(A, false, true));
-
-acc = mean(double(pred == yts)) \* 100;
+[pred, probs]= predictDeep(A, false, true));
+acc = mean(double(pred == yts)) * 100;
+```
 
 feedforward takes the number of examples in the data set, m, and returns
 the output of the final layer. This output can be passed to the
@@ -472,15 +448,13 @@ this example, the network expects to receive as input the output from
 the previous time step. Thus, in between evaluating time steps, we set
 the input at A{1} to be the previous time step’s output prediction.
 
-for t= 2:T\_samp
-
-nn.A{1}.v(:,:,t) = Aout(:,:,t-1); % NOT ACTUALLY DONE THIS WAY
-
-% Step the RNN forward
-
-Aout = feedforwardLSTM(nn, 1, t, false, true);
-
+```matlab
+for t= 2:T_samp
+  nn.A{1}.v(:,:,t) = Aout(:,:,t-1); % NOT ACTUALLY DONE THIS WAY
+  % Step the RNN forward
+  Aout = feedforwardLSTM(nn, 1, t, false, true);
 end
+```
 
 Additionally, there are some details with respect to how a recurrent
 net’s output must be evaluated, in this case. Instead of simply making
@@ -505,7 +479,9 @@ word or character from a text, such as Shakespeare’s works.
 When working with recurrent nets, an additional parameter that sets the
 length of the time sequence must be defined.
 
+```matlab
 params.T = 50; **% Length of sequence is 50 time steps**
+```
 
 Keep in mind, time series data is actually represented as a sequence of
 length T+2 (see Data Representations).
@@ -519,7 +495,9 @@ steps will not count toward the network training. This gives you the
 ability to “prime” the net with a sequence before optimizing the
 predicted sequence.
 
+```matlab
 params.Tos = 5; **% Length of sequence to ignore when training**
+```
 
 <span id="_Ref443496257" class="anchor"><span id="_Toc443501116" class="anchor"></span></span>Data Representations
 ==================================================================================================================
