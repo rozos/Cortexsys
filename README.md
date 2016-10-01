@@ -2,8 +2,6 @@
 ### May, 2016
 
 ![Cortexsys Logo](media/cortexsys.png)
-![SNL Logo](media/snl.png)
-![DOE Logo](media/doe.png)
   ----------------------------------------------------------------------
 Introduction
 ============
