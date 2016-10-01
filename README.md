@@ -6,7 +6,7 @@
 Introduction
 ============
 
-Cortexsys is a deep learning toolbox for Matlab and GNU Octave 4.0
+Cortexsys is a deep learning toolbox for Matlab (GNU Octave 4.0 with limitations)
 intended for researchers and algorithm developers who would like to
 rapidly implement and analyze new algorithms with the Matlab or Octave
 environment. Cortexsys strives to accomplish too goals which are often
