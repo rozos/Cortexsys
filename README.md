@@ -18,9 +18,9 @@ which include:
   - (4.2) Recurrent neural network improvements
     - GRU (gated recurrrent unit)
     - MGRU (minimal gated recurrent unit)
-  - (4.3) Batch normalization for feed forward and recurrent layers
+  - (4.3) Batch normalization
   - (4.4) Reinforcement learning
-    - Deep Q Learning for feed-forward and recurrrent networks
+    - Deep Q Learning
 
 Introduction
 ============
