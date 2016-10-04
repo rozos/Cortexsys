@@ -6,8 +6,8 @@
 Updates - October 3rd, 2016
 ---------------------
 Cortexsys 4.0 is in progress and will be a complete rewrite of Cortexsys.
-So far, graph support is progressing nicely. Features will be realeased as completed.
-It will add the following features:
+So far, graph support is progressing nicely. Features will be realeased as completed,
+which include:
   - (4.0) Graph based network design, layout and processing
     - Allows arbitrary network design and connectivity in both feed 
     forward (space) and recurrent (time) networks. This is similar to
