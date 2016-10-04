@@ -3,6 +3,25 @@
 
 ![Cortexsys Logo](media/cortexsys.png)
   ----------------------------------------------------------------------
+Updates - October 3rd, 2016
+---------------------
+Cortexsys 4.0 is in progress and will be a complete rewrite of Cortexsys.
+So far, graph support is progressing nicely. Features will be realeased as completed.
+It will add the following features:
+  - (4.0) Graph based network design, layout and processing
+    - Allows arbitrary network design and connectivity in both feed 
+    forward (space) and recurrent (time) networks. This is similar to
+    other toolboxes such as TensorFlow, Torch, Chainer, Neon, Caffe.
+  - (4.1) Improvements in convolution
+    - Strided convolution
+    - superconv routines can handle arbitrary number of kernels, filters and batch size
+  - (4.2) Recurrent neural network improvements
+    - GRU (gated recurrrent unit)
+    - MGRU (minimal gated recurrent unit)
+  - (4.3) Batch normalization for feed forward and recurrent layers
+  - (4.4) Reinforcement learning
+    - Deep Q Learning for feed-forward and recurrrent networks
+
 Introduction
 ============
 
