@@ -28,7 +28,8 @@ end
 
 %% %%%%%%%%%%%%%%%%%%%%% FEEDFORWARD PASS %%%%%%%%%%%%%%%%%%%%%%%%%%
 % t = 1 corresponds to time zero (initial conditions)
-for t=coder.unroll(2:T+1, T > 10) % unroll if enough time steps
+%for t=coder.unroll(2:T+1, T > 10) % unroll if enough time steps
+for t=2: (T+1)
     feedforwardLSTM(nn, m, t, newRandGen, false);
 end
 
@@ -55,7 +56,8 @@ end
 % penalize the network for a given initial time (to provide context)
 Tos_mask = [zeros(1+Tos,1); ones(T-Tos+1,1)];
 
-for t=coder.unroll(T+1:-1:2, T > 10) % unroll if enough time steps
+%for t=coder.unroll(T+1:-1:2, T > 10) % unroll if enough time steps
+for t=(T+1):-1:2
     for k=nn.N_l:-1:2
         switch nn.l.typ{k}
             case nn.defs.TYPES.FULLY_CONNECTED

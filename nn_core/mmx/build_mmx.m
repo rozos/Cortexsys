@@ -72,7 +72,7 @@ end
 clc
 
 %build_names  = {'mmx_mkl_single', 'mmx_mkl_multi','mmx_naive'};
-build_names  = {'mmx_mkl_multi'};
+build_names  = {'mmx_naive'};
 
 built_mmx   = false;
 
@@ -85,7 +85,7 @@ for b = 1:numel(build_names)
    [inc_dir, link_dir, Cflags, Lflags]  = deal('');
    
    switch arch
-      case {'win64','win32'}
+      case {'win64','win32','mingw32-i686'}
          switch name
             case 'mmx_naive'
                define   = {'WIN_SYSTEM'};
