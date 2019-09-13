@@ -1,4 +1,6 @@
 # Cortexsys 3.1 User Guide
+## Obtained from https://github.com/joncox123/Cortexsys/ and modified to compile and run in Octave.
+
 ### May, 2016
 
 ![Cortexsys Logo](media/cortexsys.png)
