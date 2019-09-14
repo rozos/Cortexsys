@@ -7,3 +7,5 @@ nn_core/mmx/mmx_mkl_multi.mexw64
 *.mat
 *.fig
 *.m~
+*.mex
+*.o
