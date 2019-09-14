@@ -14,7 +14,7 @@ addpath('Text');
 PRECISION = 'double';
 
      % definitions(PRECISION, useGPU, whichThreads, plotOn) 
-defs = definitions(PRECISION, false, [1], true);
+defs = definitions(PRECISION, false, [1], false);
 
 % Load the Shakespeares training set
 Nchars = 50; % How many characters long for each sequence 

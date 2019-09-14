@@ -8,6 +8,7 @@
 #ifdef UNIX_SYSTEM
    #include <unistd.h>
    #include <pthread.h>
+   #include <stddef.h>
 #endif
 
 #ifdef WIN_SYSTEM

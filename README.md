@@ -190,7 +190,15 @@ where built-in routines were either unavailable or did not have the
 desired performance.
 
 To compile these routines, you must setup your MEX compiler (see Matlab
-documentation[^2]). To compile the CUDA routines for convolutional nets,
+documentation[^2]). 
+
+For Octave, the simplest compilation can be done when inside mmx directory with:
+
+```matlab
+mex -lpthread -DUNIX_SYSTEM mmx.cpp
+```
+
+To compile the CUDA routines for convolutional nets,
 you must also have the NVIDIA CUDA Toolkit[^3] installed.
 
 1.  Enter the nn\_core/mmx directory and run the build\_mmx.m script.

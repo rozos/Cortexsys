@@ -113,7 +113,7 @@ for b = 1:numel(build_names)
                   define   = {'WIN_SYSTEM','USE_BLAS','MKL_ILP64'};
                end
          end
-      case {'glnxa64','glnx86'}
+      case {'glnxa64','glnx86','gnu-linux-x86_64'}
          switch name
             case 'mmx_naive'
                link     = {'pthread'};
