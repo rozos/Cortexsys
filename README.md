@@ -192,10 +192,16 @@ desired performance.
 To compile these routines, you must setup your MEX compiler (see Matlab
 documentation[^2]). 
 
-For Octave, the simplest compilation can be done when inside mmx directory with:
+For Octave, the simplest compilation can be done when inside mmx directory. For Linux:
 
 ```matlab
 mex -lpthread -DUNIX_SYSTEM mmx.cpp
+```
+
+For Windows:
+
+```matlab
+mex -lpthread -DWIN_SYSTEM mmx.cpp
 ```
 
 To compile the CUDA routines for convolutional nets,
