@@ -192,13 +192,13 @@ desired performance.
 To compile these routines, you must setup your MEX compiler (see Matlab
 documentation[^2]). 
 
-For Octave, the simplest compilation can be done when inside mmx directory. For Linux:
+For Octave, the most straightforward way to compile the mex files is to go inside directory 'mmx', and then, for Linux:
 
 ```matlab
 mex -lpthread -DUNIX_SYSTEM mmx.cpp
 ```
 
-For Windows:
+for Windows:
 
 ```matlab
 mex -lpthread -DWIN_SYSTEM mmx.cpp
