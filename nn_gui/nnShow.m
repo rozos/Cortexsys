@@ -3,7 +3,11 @@ function [] = nnShow(figNum, layers, defs)
 %   Detailed explanation goes here
 
     % Use Matlab's vector field graphic device to draw an arrow
-    drawArrow = @(x,y) quiver( x(1),y(1),x(2)-x(1),y(2)-y(1),0, 'k', 'LineWidth', 1.5, 'MaxHeadSize',2);
+    if isOctave
+      drawArrow = @(x,y) quiver( x(1),y(1),x(2)-x(1),y(2)-y(1),0, 'k', 'LineWidth', 1.5, 'MaxHeadSize',0.2);
+    else
+      drawArrow = @(x,y) quiver( x(1),y(1),x(2)-x(1),y(2)-y(1),0, 'k', 'LineWidth', 1.5, 'MaxHeadSize',2);
+    end
     
     N_l = numel(layers.sz);
     
@@ -15,7 +19,12 @@ function [] = nnShow(figNum, layers, defs)
     
     hold on
     for k=1:N_l
-        sz = 3*N_l*layers.sz{k}(1)/layers.sz{1}(1);
+        if isOctave
+          sz = min(3*N_l*layers.sz{k}(1)/layers.sz{1}(1),50);
+        else
+          sz = 3*N_l*layers.sz{k}(1)/layers.sz{1}(1);
+        end
+        
             pos = [-sz/2 3*(k-1) sz 1];
             % Draw rectangle representing a layer
             rectangle('Position',pos,'Curvature',[0 0], 'FaceColor', 'y', 'LineWidth', 1.5)
