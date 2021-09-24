@@ -96,7 +96,7 @@ classdef definitions < handle
             % Write out file indicating that copyright and license were
             % shown
             licShown = true;
-            save('cortexsys_lic.mat', 'licShown');
+            %save('cortexsys_lic.mat', 'licShown');
         end
     end
 end
