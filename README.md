@@ -220,14 +220,14 @@ reflect the location of the Cortexsys directory (e.g.
 ‘\~/user/Cortexsys/’).
 
 ```matlab
-addpath('../../nn\_gui');
-addpath('../../nn\_core');
-addpath('../../nn\_core/cuda');
-addpath('../../nn\_core/mmx');
-addpath('../../nn\_core/Optimizers');
-addpath('../../nn\_core/Activations');
-addpath('../../nn\_core/Wrappers');
-addpath('../../nn\_core/ConvNet');
+addpath('../../nn_gui');
+addpath('../../nn_core');
+addpath('../../nn_core/cuda');
+addpath('../../nn_core/mmx');
+addpath('../../nn_core/Optimizers');
+addpath('../../nn_core/Activations');
+addpath('../../nn_core/Wrappers');
+addpath('../../nn_core/ConvNet');
 ```
 
 Next, you must initialize Cortexsys and setup some basic parameters that
