@@ -18,7 +18,10 @@ PRECISION = 'double';
 defs = definitions(PRECISION, false, [1], false);
 
 % Load the Shakespeares training set
-Nchars = 50; % How many characters long for each sequence 
+Nchars = input('How many characters long for each sequence =')
+if isempty(Nchars)
+  Nchars = 50; % How many characters long for each sequence 
+end
 offset = 0; % How much to shift the labels from the input data
 txtpath = 'shakespeare_subset.txt';
 [X, vmap] = streamText2mat(txtpath, Nchars, offset);
