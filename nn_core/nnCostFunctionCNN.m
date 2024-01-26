@@ -50,7 +50,14 @@ for k=nn.N_l:-1:2
         case nn.defs.TYPES.FULLY_CONNECTED
             if k==nn.N_l
                 % Compute output layer deltas
-                d{k} = (nn.A{nn.N_l}.v - Y.v).*nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v);
+
+                if (nn.l.af{nn.N_l}.costType == nn.l.af{nn.N_l}.defs.COSTS.CUSTOM_ERROR )
+                    d{k} = (J-nn.l.af{nn.N_l}.cost(Y, nn.A{nn.N_l},m,1,-0.1))...
+                         .* nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v) / 0.1;
+                else
+                    d{k} = (nn.A{nn.N_l}.v - Y.v).* ...
+                            nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v);
+                end
             else
                 % Compute hidden layer deltas
                 d{k} = nn.W{k}'*d{k+1}.*nn.l.af{k}.grad(nn.A{k}.v);

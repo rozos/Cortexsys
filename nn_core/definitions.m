@@ -46,6 +46,7 @@ classdef definitions < handle
             obj.COSTS.LOGISTIC_REGRESSION = 1;
             obj.COSTS.SQUARED_ERROR = 2;
             obj.COSTS.CROSS_ENTROPY = 3;
+            obj.COSTS.CUSTOM_ERROR = 9;
             
             obj.TYPES = struct();
             obj.TYPES.INPUT = 0;
