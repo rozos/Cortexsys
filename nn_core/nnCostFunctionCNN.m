@@ -52,8 +52,8 @@ for k=nn.N_l:-1:2
                 % Compute output layer deltas
 
                 if (nn.l.af{nn.N_l}.costType == nn.l.af{nn.N_l}.defs.COSTS.CUSTOM_ERROR )
-                    d{k} = (J-nn.l.af{nn.N_l}.cost(Y, nn.A{nn.N_l},m,1,-0.1))...
-                         .* nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v) / 0.1;
+                  d{k} = nn.l.af{nn.N_l}.cost( Y, nn.A{nn.N_l}, m, 1, true)...
+                         .* nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v);
                 else
                     d{k} = (nn.A{nn.N_l}.v - Y.v).* ...
                             nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v);
