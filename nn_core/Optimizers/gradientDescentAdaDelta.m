@@ -67,6 +67,14 @@ while (i < p.maxIter)
     
     % Compute gradients and cost (back-prop)
     [J, dJdW, dJdB] = feval(f, nn, r, true);
+
+    % Save weights if best found till now
+    if (J < Jbest)
+        ibest = i;
+        Jbest = gather(J); 
+        Wbest = nn.W;
+        Bbest = nn.b;
+    end
     
     % Compute AdaDelta RMS variables
     for k=1:N_l-1   
@@ -96,14 +104,7 @@ while (i < p.maxIter)
         E_dB{k} = rho*E_dB{k} + (1-rho)*dB{k}.^2;
         nn.b{k} = nn.b{k} + dB{k};
     end
-
-    if (J < Jbest)
-        ibest = i;
-        Jbest = gather(J); 
-        Wbest = nn.W;
-        Bbest = nn.b;
-    end
-   
+ 
     if((mod(i,PrintIter)==0) || i==1)
         deltaT = toc/PrintIter;
         totalTime = totalTime + PrintIter*deltaT;
