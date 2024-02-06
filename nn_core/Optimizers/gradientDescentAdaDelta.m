@@ -168,7 +168,7 @@ for k=1:N_l-1
     nn.b{k} = Bbest{k};
 end
 
-disp(['Lowest cost on iteration ' num2str(ibest) '.']);
+disp(['Lowest cost ' num2str(Jbest) ' on iteration ' num2str(ibest) '.']);
 
 if (defs.plotOn == true)
     if ~isempty(yts)
