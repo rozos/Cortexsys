@@ -162,13 +162,19 @@ while (i < p.maxIter)
 end
 delete(h.waitbar);
 
-% Present the best results achieved during the optimization loop
-Jbest = gather(Jbest);
-for k=1:N_l-1
-    nn.W{k} = Wbest{k};
-    nn.b{k} = Bbest{k};
+% Restore the best results achieved during the optimization loop
+if isfield(p, 'savebest' ) && (p.savebest==false)
+  Jbest= J;
+  ibest= i;
+else
+  Jbest = gather(Jbest);
+  for k=1:N_l-1
+      nn.W{k} = Wbest{k};
+      nn.b{k} = Bbest{k};
+  end
 end
 
+% Present the best results achieved during the optimization loop
 disp(['Lowest cost ' num2str(Jbest) ' on iteration ' num2str(ibest) '.']);
 
 if (defs.plotOn == true)
