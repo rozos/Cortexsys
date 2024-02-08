@@ -64,7 +64,11 @@ for t=(T+1):-1:2
                 if k==nn.N_l
                     % Compute output layer deltas
                     % Note: nn.Y.v(:,:,t-1) corresponds to just 't' for non input/output arrays
-                    nn.d{k}(:,:,t) = Tos_mask(t)*(nn.A{nn.N_l}.v(:,:,t) - Y.v(:,:,t)).*nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v(:,:,t));
+                    if (nn.l.af{nn.N_l}.costType == nn.l.af{nn.N_l}.defs.COSTS.CUSTOM_ERROR )
+                        nn.d{k}(:,:,t) = nn.l.af{nn.N_l}.cost( Y, nn.A{nn.N_l}, m, t, true) .* nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v(:,:,t));
+                    else
+                        nn.d{k}(:,:,t) = Tos_mask(t)*(nn.A{nn.N_l}.v(:,:,t) - Y.v(:,:,t)).*nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v(:,:,t));
+                    end
                 else
                     % Compute hidden layer deltas
                     nn.d{k}(:,:,t) = nn.W{k}'*nn.d{k+1}(:,:,t).*nn.l.af{k}.grad(nn.A{k}.v(:,:,t));
