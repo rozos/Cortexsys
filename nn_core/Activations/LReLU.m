@@ -59,8 +59,9 @@ classdef LReLU < handle
         end
         
         function z = grad(~,z)
-            z(z>0) = 1;
-            z(z<=0) = 0.01;
+            %z(z>0) = 1;
+            %z(z<=0) = 0.01;
+            z = (z > 0) + 0.01 * (z <= 0);
         end
         
         % Gradient at the output layer %
