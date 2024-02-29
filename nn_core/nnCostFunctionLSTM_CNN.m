@@ -97,7 +97,7 @@ for t=(T+1):-1:2
                         Ak = cnnFlattenLayer(nn.A{k}.v, m, t);
                         dk = nn.W{k}'*nn.d{k+1}(:,:,t).*nn.l.af{k}.grad(Ak);
                         nn.d{k}(:,:,:,:,t) = cnnUnflattenLayer(dk, nn.l.szo{k});
-                    case nn.defs.TYPES.CONVOLUTIONAL;
+                    case nn.defs.TYPES.CONVOLUTIONAL
                         nn.d{k+1}(:,:,:,:,t) = cnnUnflattenLayer(nn.d{k+1}(:,:,:,:,t), nn.l.szo{k+1});
                         nn.d{k}(:,:,:,:,t) = cnnUnconvolve(nn.d{k+1}(:,:,:,:,t), nn.W{k}, nn, k, m).*nn.l.af{k}.grad(nn.A{k}.v(:,:,:,:,t));
                     case nn.defs.TYPES.AVERAGE_POOLING
