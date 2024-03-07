@@ -42,13 +42,13 @@ if(defs.plotOn)
 end
 
 if exist('OCTAVE_VERSION') == 0
-  h.waitbar = waitbar(0,'1','Name','Training Network',...
-              'CreateCancelBtn',...
-              'setappdata(gcbf,''canceling'',1)');
-  setappdata(h.waitbar,'canceling',0);
+  %h.waitbar = waitbar(0,'1','Name','Training Network',...
+  %            'CreateCancelBtn',...
+  %            'setappdata(gcbf,''canceling'',1)');
+  %setappdata(h.waitbar,'canceling',0);
 else
-  h.waitbar = waitbar(0,'1','Name','Training Network');
-  setappdata(h.waitbar,'canceling',0);
+  %h.waitbar = waitbar(0,'1','Name','Training Network');
+  %setappdata(h.waitbar,'canceling',0);
 end
 
 i = 0;
@@ -109,7 +109,7 @@ while (i < p.maxIter)
         deltaT = toc/PrintIter;
         totalTime = totalTime + PrintIter*deltaT;
         avgTimePerIter = totalTime/i;
-        waitbar(i/double(p.maxIter),h.waitbar,sprintf('Time remaining: %.2f minutes',(p.maxIter - i)*avgTimePerIter/60));
+        %waitbar(i/double(p.maxIter),h.waitbar,sprintf('Time remaining: %.2f minutes',(p.maxIter - i)*avgTimePerIter/60));
         
         % fprintf doesn't print on workers (w/ spmd)
         disp(sprintf('Iteration %4i | Cost: %4.3e | Time: %4.1f ms',...
@@ -142,10 +142,10 @@ while (i < p.maxIter)
         end
         tic
         
-        if getappdata(h.waitbar,'canceling')
-            disp('Training terminated early by user.')
-            break
-        end
+        %if getappdata(h.waitbar,'canceling')
+        %    disp('Training terminated early by user.')
+        %    break
+        %end
     end
     
     if (defs.plotOn == true)
@@ -160,7 +160,7 @@ while (i < p.maxIter)
         Costs(i) = gather(J);
     end
 end
-delete(h.waitbar);
+%delete(h.waitbar);
 
 % Restore the best results achieved during the optimization loop
 if isfield(p, 'savebest' ) && (p.savebest==false)
