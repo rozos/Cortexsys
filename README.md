@@ -182,8 +182,9 @@ Initialization and Startup
 ==========================
 
 Before launching Cortexsys, it is necessary to compile the CUDA routines
-if convolutional neural nets are being used and GPU acceleration is
-desired. The MMX routines must be compiled if using recurrent networks
+if convolutional neural nets (nnCostFunctionLSTM_CNN or nnCostFunctionLSTM
+is used in the definition of the cost) are being used and GPU acceleration 
+is desired. The MMX routines must be compiled if using recurrent networks
 with any network type, unless GPU acceleration is being used. These
 routines accelerate Matlab’s built in functions for specific operations
 where built-in routines were either unavailable or did not have the
@@ -192,7 +193,8 @@ desired performance.
 To compile these routines, you must setup your MEX compiler (see Matlab
 documentation[^2]). 
 
-For Octave, the most straightforward way to compile the mex files is to go inside directory 'mmx', and then, for Linux:
+For Octave, the most straightforward way to compile the mex files is to go 
+inside directory 'mmx', and then, for Linux:
 
 ```matlab
 mex -lpthread -DUNIX_SYSTEM mmx.cpp
