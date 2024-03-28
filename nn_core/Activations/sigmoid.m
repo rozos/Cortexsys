@@ -56,16 +56,23 @@ classdef sigmoid < handle
         function gp = ograd(obj,a)
             if (obj.costType == obj.defs.COSTS.LOGISTIC_REGRESSION)
                 gp = 1; % logistic regression
-            elseif (obj.costType == obj.defs.COSTS.SQUARED_ERROR)    
+            %elseif (obj.costType == obj.defs.COSTS.SQUARED_ERROR)    
+            else
                 gp = obj.grad(a); % squared error
             end
         end
         
-        function J = cost(obj,Y, A, m, t)
+        function J = cost(obj,Y, A, m, t, param)
             if (obj.costType == obj.defs.COSTS.LOGISTIC_REGRESSION)
                 J = logisticCostFun(Y, A, m, t);
             elseif (obj.costType == obj.defs.COSTS.SQUARED_ERROR)
                 J = squaredErrorCostFun(Y, A, m, t);
+            elseif (obj.costType == obj.defs.COSTS.CUSTOM_ERROR)
+                if exist( 'param', 'var' )
+                    J = customErrorCostFun(Y, A, m, t, param);
+                else
+                    J = customErrorCostFun(Y, A, m, t );
+                end
             end
         end
     end
