@@ -61,6 +61,14 @@ while (i < p.maxIter)
     
     % Compute gradients and cost (back-prop)
     [J, dJdWc, dJdBc] = feval(f, nn, r, true);
+
+    % Save weights if best found till now
+    if (J < Jbest)
+        ibest = i;
+        Jbest = J; 
+        Wbest = nn.W;
+        Bbest = nn.b;
+    end
     
     % Compute actual weight and bias updates
     for k=1:N_l-1   
@@ -94,13 +102,6 @@ while (i < p.maxIter)
         end
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    if (J < Jbest)
-        ibest = i;
-        Jbest = J; 
-        Wbest = nn.W;
-        Bbest = nn.b;
-    end
 
     if((mod(i,PrintIter)==0) || i==1)
         deltaT = toc/PrintIter;
