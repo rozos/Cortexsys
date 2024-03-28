@@ -60,13 +60,20 @@ classdef tanh_af < handle
         
         % Gradient at the output layer %
         function gp = ograd(obj,z)
-            if (obj.costType == obj.defs.COSTS.SQUARED_ERROR)    
-                gp = obj.grad(z); % squared error
-            end
+            gp = obj.grad(z); % squared error
         end
         
-        function J = cost(~,Y, A, m, t)
-            J = squaredErrorCostFun(Y, A, m, t);
+        function J = cost(obj,Y, A, m, t, param)
+            if (obj.costType == obj.defs.COSTS.SQUARED_ERROR)    
+              J = squaredErrorCostFun(Y, A, m, t);
+            elseif (obj.costType == obj.defs.COSTS.CUSTOM_ERROR)
+                if exist( 'param', 'var' )
+                    J = customErrorCostFun(Y, A, m, t, param);
+                else
+                    J = customErrorCostFun(Y, A, m, t );
+                end
+            end
         end
+
     end
 end
