@@ -63,16 +63,32 @@ for k=nn.N_l:-1:2
                 d{k} = nn.W{k}'*d{k+1}.*nn.l.af{k}.grad(nn.A{k}.v);
             end           
         case nn.defs.TYPES.CONVOLUTIONAL
-            switch nn.l.typ{k+1} % switch based on type of layer above
-                case nn.defs.TYPES.FULLY_CONNECTED
-                    d{k} = nn.W{k}'*d{k+1}.*nn.l.af{k}.grad(nn.A{k}.v);
-                    d{k} = cnnUnflattenLayer(d{k}, nn.l.szo{k});
-                case nn.defs.TYPES.CONVOLUTIONAL;
-                    d{k+1} = cnnUnflattenLayer(d{k+1}, nn.l.szo{k+1});
-                    d{k} = cnnUnconvolve(d{k+1}, nn.W{k}, nn, k, m).*nn.l.af{k}.grad(nn.A{k}.v);
-                case nn.defs.TYPES.AVERAGE_POOLING
-                    d{k+1} = cnnUnflattenLayer(d{k+1}, nn.l.szo{k+1});
-                    d{k} = ultrakron(d{k+1}, nn.W{k}(:,:,1)).*nn.l.af{k}.grad(nn.A{k}.v); % "blow up" the deltas into an unpooled version
+            if k==nn.N_l        % This is output layer
+                if (nn.l.af{nn.N_l}.costType == nn.l.af{nn.N_l}.defs.COSTS.CUSTOM_ERROR )
+                  d{k} = nn.l.af{nn.N_l}.cost( Y, nn.A{nn.N_l}, m, 1, true)...
+                         .* nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v);
+                else
+                  d{k} = (nn.A{nn.N_l}.v - Y.v).* ...
+                            nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v);
+                end
+                %d{k} = cnnUnflattenLayer(d{k}, nn.l.szo{k});
+                d{k} = reshape(d{k}', [ nn.l.szo{k}(2), ...
+                                        length(d{k})/nn.l.szo{k}(2), ...
+                                        size(d{k},1), nn.l.szo{k}(3) ] );
+                d{k} = permute(d{k}, [1, 4, 3, 2] );
+                                        
+            else
+              switch nn.l.typ{k+1} % switch based on type of layer above
+                  case nn.defs.TYPES.FULLY_CONNECTED
+                      d{k} = nn.W{k}'*d{k+1}.*nn.l.af{k}.grad(nn.A{k}.v);
+                      d{k} = cnnUnflattenLayer(d{k}, nn.l.szo{k});
+                  case nn.defs.TYPES.CONVOLUTIONAL;
+                      d{k+1} = cnnUnflattenLayer(d{k+1}, nn.l.szo{k+1});
+                      d{k} = cnnUnconvolve(d{k+1}, nn.W{k}, nn, k, m).*nn.l.af{k}.grad(nn.A{k}.v);
+                  case nn.defs.TYPES.AVERAGE_POOLING
+                      d{k+1} = cnnUnflattenLayer(d{k+1}, nn.l.szo{k+1});
+                      d{k} = ultrakron(d{k+1}, nn.W{k}(:,:,1)).*nn.l.af{k}.grad(nn.A{k}.v); % "blow up" the deltas into an unpooled version
+              end
             end       
         case nn.defs.TYPES.AVERAGE_POOLING
             switch nn.l.typ{k+1} % switch based on type of layer above
