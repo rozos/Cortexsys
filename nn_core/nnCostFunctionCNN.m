@@ -65,18 +65,16 @@ for k=nn.N_l:-1:2
         case nn.defs.TYPES.CONVOLUTIONAL
             if k==nn.N_l        % This is output layer
                 if (nn.l.af{nn.N_l}.costType == nn.l.af{nn.N_l}.defs.COSTS.CUSTOM_ERROR )
-                  d{k} = nn.l.af{nn.N_l}.cost( Y, nn.A{nn.N_l}, m, 1, true)...
-                         .* nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v);
+                  tmp = nn.l.af{nn.N_l}.cost( Y, nn.A{nn.N_l}, m, 1, true);
+                  tmp = reshape(tmp', [ nn.l.szo{k}(2), ...
+                                        length(tmp)/nn.l.szo{k}(2), ...
+                                        size(tmp,1), nn.l.szo{k}(3) ] );
+                  tmp = permute(tmp, [1, 4, 3, 2] );
+                  d{k} = tmp .* nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v);
                 else
                   d{k} = (nn.A{nn.N_l}.v - Y.v).* ...
                             nn.l.af{nn.N_l}.ograd(nn.A{nn.N_l}.v);
                 end
-                %d{k} = cnnUnflattenLayer(d{k}, nn.l.szo{k});
-                d{k} = reshape(d{k}', [ nn.l.szo{k}(2), ...
-                                        length(d{k})/nn.l.szo{k}(2), ...
-                                        size(d{k},1), nn.l.szo{k}(3) ] );
-                d{k} = permute(d{k}, [1, 4, 3, 2] );
-                                        
             else
               switch nn.l.typ{k+1} % switch based on type of layer above
                   case nn.defs.TYPES.FULLY_CONNECTED
